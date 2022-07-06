@@ -1,7 +1,9 @@
 package app.christopher.jetnote.components
 
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
@@ -30,7 +32,7 @@ fun NoteInputText(
         colors = TextFieldDefaults.outlinedTextFieldColors(
             backgroundColor = Color.Transparent),
         maxLines = maxLine,
-        label = { Text(text = label)},
+        label = { Text(text = label) },
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = {
@@ -41,3 +43,24 @@ fun NoteInputText(
     )
 
 }
+
+
+@Composable
+fun NoteButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+) {
+
+    Button(
+        onClick = onClick,
+        shape = CircleShape,
+        enabled = enabled,
+        modifier = modifier
+    ) {
+        Text(text)
+    }
+}
+
+
