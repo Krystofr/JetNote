@@ -77,15 +77,22 @@ fun NoteScreen(
                     TextUtils.isEmpty(description) -> {
                         Toast.makeText(context, "Enter a description", Toast.LENGTH_SHORT).show()
                     }
-                    else -> //Save note to list
-                        Toast.makeText(context, "Enter a description", Toast.LENGTH_SHORT).show()
+                    else -> { //Save note to list
+                        onAddNote(Note(title = title, description = description))
+                        title = ""
+                        description = ""
+                        Toast.makeText(context, "Note added below", Toast.LENGTH_SHORT).show()
+                    }
                 }
             })
         }
         Divider(Modifier.padding(15.dp))
         LazyColumn {
             items(notes) { note ->
-                NoteRow(note = note, onNoteClicked = {})
+                NoteRow(note = note, onNoteClicked = {
+                    //Remove note when clicked
+                    onRemoveNote(note)
+                })
             }
         }
     }
