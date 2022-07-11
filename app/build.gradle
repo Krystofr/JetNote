@@ -71,7 +71,8 @@ dependencies {
 
     //Room
     implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    //To use Kotlin Annotation Processing Tool
+    kapt "androidx.room:room-compiler:$room_version"
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
