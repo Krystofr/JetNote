@@ -21,7 +21,9 @@ import app.christopher.jetnote.model.Note
 import app.christopher.jetnote.screen.NoteScreen
 import app.christopher.jetnote.screen.NoteViewModel
 import app.christopher.jetnote.ui.theme.JetNoteTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +55,7 @@ fun NoteApp(noteViewModel: NoteViewModel = viewModel()) {
         }
     )
 }
+
 
 
 @RequiresApi(Build.VERSION_CODES.O)
