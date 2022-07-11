@@ -1,14 +1,27 @@
 package app.christopher.jetnote.model
 
 import android.annotation.SuppressLint
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.time.Instant
 import java.time.LocalDateTime
 import java.util.*
 
 @SuppressLint("NewApi")
-data class Note(
-    val id: UUID = UUID.randomUUID(),
-    val title: String? = null,
-    val description: String? = null,
-    val dateCreated: LocalDateTime = LocalDateTime.now()
 
+@Entity(tableName = "notes_table")
+data class Note(
+
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+
+    @ColumnInfo(name = "note_title")
+    val title: String? = null,
+
+    @ColumnInfo(name = "note_description")
+    val description: String? = null,
+
+    @ColumnInfo(name = "note_entry_date")
+    val dateCreated: Date = Date.from(Instant.now()),
 )
