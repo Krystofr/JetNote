@@ -1,5 +1,6 @@
 package app.christopher.jetnote.screen
 
+import android.app.AlertDialog
 import android.os.Build
 import android.text.TextUtils
 import android.widget.Toast
@@ -26,6 +27,7 @@ import app.christopher.jetnote.components.NoteButton
 import app.christopher.jetnote.components.NoteInputText
 import app.christopher.jetnote.data.NoteDataSource
 import app.christopher.jetnote.model.Note
+import app.christopher.jetnote.util.formatDate
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -33,8 +35,8 @@ import java.time.format.DateTimeFormatter
 fun NoteScreen(
     notes: List<Note>,
     onAddNote: (Note) -> Unit,
-    onRemoveNote: (Note) -> Unit
-){
+    onRemoveNote: (Note) -> Unit,
+) {
 
     val context = LocalContext.current
     var title by remember {
@@ -46,11 +48,13 @@ fun NoteScreen(
     Column(Modifier.padding(16.dp)) {
         TopAppBar(title = {
             Modifier.fillMaxWidth()
-                          Text(text = stringResource(id = R.string.app_name), color = Color.White)
+            Text(text = stringResource(id = R.string.app_name), color = Color.White)
         }, actions = {
-            Icon(imageVector = Icons.Rounded.Menu, contentDescription = "App Bar icon", tint = Color.White)
+            Icon(imageVector = Icons.Rounded.Menu,
+                contentDescription = "App Bar icon",
+                tint = Color.White)
         },
-        backgroundColor = Color(0xFF9979E2))
+            backgroundColor = Color(0xFF9979E2))
 
         //Content
         Column(Modifier.fillMaxWidth(),
@@ -60,7 +64,7 @@ fun NoteScreen(
             NoteInputText(text = title, label = "Title", onTextChange = {
                 if (it.all { char ->
                         char.isLetter() || char.isWhitespace()
-                }) title = it
+                    }) title = it
             })
             Spacer(modifier = Modifier.size(20.dp))
             NoteInputText(text = description, label = "Add note", onTextChange = {
@@ -86,6 +90,7 @@ fun NoteScreen(
                 }
             })
         }
+
         Divider(Modifier.padding(15.dp))
         LazyColumn {
             items(notes) { note ->
@@ -104,7 +109,9 @@ fun NoteScreen(
 fun NoteRow(
     modifier: Modifier = Modifier,
     note: Note,
-    onNoteClicked: (Note) -> Unit) {
+    onNoteClicked: (Note) -> Unit,
+) {
+
     Surface(modifier
         .padding(14.dp)
         .clip(RoundedCornerShape(topEnd = 33.dp, bottomStart = 33.dp))
@@ -112,14 +119,16 @@ fun NoteRow(
         color = Color(0xFFDFE6EB),
         elevation = 10.dp) {
         Column(modifier
-            .clickable { onNoteClicked(note) }
+            .clickable {
+                onNoteClicked(note)
+            }
             .padding(horizontal = 14.dp, vertical = 6.dp),
             horizontalAlignment = Alignment.Start) {
-            Text(text = note.title!!,
+            Text(text = note.title,
                 style = MaterialTheme.typography.subtitle2)
-            Text(text = note.description!!, style = MaterialTheme.typography.subtitle1)
-            /*Text(text = note.dateCreated.format(DateTimeFormatter.ofPattern("EEE, d MMM")),
-                style = MaterialTheme.typography.caption, color = MaterialTheme.colors.primary)*/
+            Text(text = note.description, style = MaterialTheme.typography.subtitle1)
+            Text(text = formatDate(note.dateCreated.time),
+                style = MaterialTheme.typography.caption, color = MaterialTheme.colors.primary)
 
 
         }

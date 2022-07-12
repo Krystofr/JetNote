@@ -1,7 +1,9 @@
 package app.christopher.jetnote
 
+import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -10,11 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.christopher.jetnote.data.NoteDataSource
@@ -46,14 +46,28 @@ class MainActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NoteApp(noteViewModel: NoteViewModel) {
-
+    val context = LocalContext.current
+    val openDialog = remember { mutableStateOf(false) }
     val noteList = noteViewModel.noteList.collectAsState().value
     NoteScreen(notes = noteList,
         onAddNote = {
             noteViewModel.addNote(it)
         },
         onRemoveNote = {
-            noteViewModel.removeNote(it)
+            openDialog.value = true
+            if (openDialog.value) {
+                val dialog = AlertDialog.Builder(context)
+                dialog.setMessage("Delete this note?")
+                    .setCancelable(false)
+                    .setPositiveButton("YES") { _, _ ->
+                        //Delete note from db
+                        noteViewModel.removeNote(it)
+                        Toast.makeText(context, "Note deleted", Toast.LENGTH_SHORT).show()
+                    }.setNegativeButton("CANCEL") { action, _ ->
+                        action.cancel()
+                        openDialog.value = false
+                    }.show()
+            }
         }
     )
 }

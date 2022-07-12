@@ -24,7 +24,6 @@ class NoteViewModel @Inject constructor (private val noteRepository: NoteReposit
 
     init {
         //noteList.addAll(NoteDataSource().loadNotes())
-
         viewModelScope.launch(Dispatchers.IO) {
             noteRepository.getAllNotes().distinctUntilChanged()
                 .collect{ listOfNotes ->
@@ -59,5 +58,5 @@ class NoteViewModel @Inject constructor (private val noteRepository: NoteReposit
         noteRepository.getNoteById(noteId)
     }
 
-    fun getAllNotes() : Flow<List<Note>> = noteRepository.getAllNotes()
+    //fun getAllNotes() : Flow<List<Note>> = noteRepository.getAllNotes()
 }
